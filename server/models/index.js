@@ -5,6 +5,7 @@ module.exports = {
     // a function which produces all the messages
     get: function (callback) {
       db.query('SELECT * FROM messages', (error, results, fields) => {
+        console.log('these are our inputs: ', error, results, fields);
         if ( error ) {
           callback(error);
         } else {
@@ -14,7 +15,7 @@ module.exports = {
     },
     
     // a function which can be used to insert a message into the database
-    post: function () {} 
+    post: function (callback) {} 
   },
   
   users: {
