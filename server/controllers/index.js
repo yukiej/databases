@@ -22,12 +22,11 @@ module.exports = {
       //once we get the messages
       //send to to client: package it with an object with a reponse
       // console.log("I have received a get request for messages!");
-      console.log('We are in the messages get! Here is the res:', res);
+      // console.log('We are in the messages get! Here is the res:', res);
       models.messages.get((error, results) => {
         if ( error ) {
           console.log('error');
         } else {
-          console.log("results from controllers get: ", results);
           data = JSON.stringify(results);
           res.writeHead(statusCode, headers);
           res.end(data);
@@ -42,19 +41,50 @@ module.exports = {
     post: function (req, res) {
       console.log("the req is: ", req);
       let reqBody = '';
-      req.on('data', data => reqBody += data);
-      req.on('end', () => {
-        JSON.parse(reqBody);
-        models.messages.post(()=>{}, reqBody);
+      // req.on('data', data => reqBody += data);
+      // req.on('end', () => {
+      //   JSON.parse(reqBody);
+      //   models.messages.post(()=>{}, reqBody);
+      // });
+      models.messages.post(req, (error, results) => {
+        if ( error ) {
+          console.log(error);
+        } else {
+          statusCode = 201;
+          res.writeHead(statusCode, headers);
+          data = JSON.stringify({});
+          res.end(data); 
+        }
       });
-      data = JSON.stringify({});
+      
     } 
   },
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
-    post: function (req, res) {}
+    get: function (req, res) {
+      models.users.get((error, results) => {
+        if ( error ) {
+          console.log('error');
+        } else {
+          data = JSON.stringify(results);
+          res.writeHead(statusCode, headers);
+          res.end(data);
+        }
+      });
+    },
+    post: function (req, res) {
+      models.users.post(req.body.username, (error, results) => {
+        if ( error ) {
+          console.log('error posting user');
+        } else {
+          data = JSON.stringify({});
+          statusCode = 201; 
+          res.writeHead(statusCode, headers);
+          res.end(data);
+        }
+      });
+    }
   }
 };
 

@@ -12,11 +12,11 @@ CREATE TABLE users (
 
 CREATE TABLE messages (
   /* Describe your table here.*/
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
   message TEXT,
   rooms TEXT, 
-  id_users VARCHAR(14),
-  FOREIGN KEY(id_users) REFERENCES users(id)
+  id_users VARCHAR(14)
+  -- FOREIGN KEY(id_users) REFERENCES users(id)
 );
 
 /* Create other tables and define schemas for them here! */
