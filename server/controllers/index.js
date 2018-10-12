@@ -21,8 +21,17 @@ module.exports = {
       //get all the messages from db
       //once we get the messages
       //send to to client: package it with an object with a reponse
+      // console.log("I have received a get request for messages!");
+      console.log('We are in the messages get! Here is the res:', res);
       models.messages.get((error, results) => {
-        console.log('these are the results: ', results);
+        if ( error ) {
+          console.log('error');
+        } else {
+          console.log("results from controllers get: ", results);
+          data = JSON.stringify(results);
+          res.writeHead(statusCode, headers);
+          res.end(data);
+        }
       });
       // data = JSON.stringify({results: data.map(JSON.parse)});
       // res.writeHead(statusCode, headers);
@@ -31,8 +40,13 @@ module.exports = {
      
     // a function which handles posting a message to the database
     post: function (req, res) {
-      
-      
+      console.log("the req is: ", req);
+      let reqBody = '';
+      req.on('data', data => reqBody += data);
+      req.on('end', () => {
+        JSON.parse(reqBody);
+        models.messages.post(()=>{}, reqBody);
+      });
       data = JSON.stringify({});
     } 
   },
